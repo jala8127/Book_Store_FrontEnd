@@ -1,0 +1,9 @@
+.page {
+     display: flex;
+     justify-content: center;   /* centers horizontally */
+     align-items: center;       /* centers vertically */
+     height: 100vh;             /* full viewport height */
+     background-color: #53c0e1; /* your background color */
+     color: rgb(255, 255, 255);              /* optional text color */
+     text-align: center;        /* centers text inside the element */
+   }

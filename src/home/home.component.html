@@ -1,0 +1,68 @@
+<!-- Main Content -->
+<div class="demo">
+  <h1>Welcome to BookStore</h1>
+  <div class="image-container">
+    <img src="assets/images/login-page.jpeg" alt="Login Page" />
+    <div class="button-wrapper">
+      <button class="login-button btn btn-primary" (click)="showModal = true">Login</button>
+    </div>
+  </div>
+
+  <!-- Login Modal -->
+  <div *ngIf="showModal" class="modal fade show d-block" style="background-color: rgba(0, 0, 0, 0.5);">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Login</h5>
+          <button type="button" class="btn-close" (click)="showModal = false"></button>
+        </div>
+        <div class="modal-body">
+          <input type="text" [(ngModel)]="Email" class="form-control mb-2" placeholder="Email" />
+          <input type="password" [(ngModel)]="password" class="form-control mb-3" placeholder="Password" />
+          <button class="btn modal-login w-100" (click)="onLoginClick()">Login</button>
+          <div class="text-center mt-3">
+            <a (click)="openForgotPassword()">Forgot Password?</a> |
+            <a (click)="openRegister()">Create New Account</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Forgot Password Modal -->
+<div *ngIf="showForgotPasswordModal" class="modal fade show d-block" style="background-color: rgba(0, 0, 0, 0.5);">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Forgot Password</h5>
+        <button type="button" class="btn-close" (click)="closeForgotPassword()" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <input type="email" class="form-control mb-3" placeholder="Enter your email" />
+        <button class="btn modal-login w-100" (click)="closeForgotPassword()">Submit</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Register Modal -->
+<div *ngIf="showRegisterModal" class="modal fade show d-block" style="background-color: rgba(0, 0, 0, 0.5);">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Create New Account</h5>
+        <button type="button" class="btn-close" (click)="closeRegister()" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <!-- Add this inside the modal-body of the Register Modal -->
+<input type="text" class="form-control mb-2" [(ngModel)]="registerName" placeholder="Name" />
+<input type="email" class="form-control mb-2" [(ngModel)]="registerEmail" placeholder="Email" />
+<input type="text" class="form-control mb-2" [(ngModel)]="registerPhone" placeholder="Phone Number" />
+<input type="password" class="form-control mb-2" [(ngModel)]="registerPassword" placeholder="Password" />
+<input type="password" class="form-control mb-3" [(ngModel)]="registerConfirmPassword" placeholder="Confirm Password" />
+        <button class="btn modal-login w-100" (click)="onRegisterSubmit()">Register</button>
+      </div>
+    </div>
+  </div>
+</div>
