@@ -1,8 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
+import { ToastrService } from 'ngx-toastr'; // Toast import
 
 @Component({
   selector: 'app-home',
@@ -11,7 +12,7 @@ import { HttpClient } from '@angular/common/http';
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss']
 })
-export class HomeComponent {
+export class HomeComponent implements OnInit {
   showModal = false;
   showForgotPasswordModal = false;
   showRegisterModal = false;
@@ -24,15 +25,30 @@ export class HomeComponent {
   registerPassword: string = '';
   registerConfirmPassword: string = '';
 
-  constructor(private router: Router, private http: HttpClient) {} 
+  constructor(
+    private router: Router,
+    private http: HttpClient,
+    private toastr: ToastrService // Inject toast service
+  ) {}
+
+  ngOnInit() {
+    this.showModal = true;
+  }
 
   onLoginClick(): void {
-    if (this.Email === 'jala@gmail.com' && this.password === 'password') {
-      this.showModal = false;
-      this.router.navigate(['/dashboard']);
-    } else {
-      alert('Invalid credentials!');
-    }
+    this.http.post('http://localhost:8080/api/users/login', {
+      email: this.Email,
+      password: this.password
+    }, { responseType: 'text' }).subscribe({
+      next: () => {
+        this.toastr.success('Login successful!');
+        this.showModal = false;
+        this.router.navigate(['/dashboard']);
+      },
+      error: () => {
+        this.toastr.error('Login failed!');
+      }
+    });
   }
 
   openForgotPassword(): void {
@@ -45,51 +61,51 @@ export class HomeComponent {
     this.showRegisterModal = true;
   }
 
-  closeForgotPassword(): void {
-    this.showForgotPasswordModal = false;
-  }
+  // closeForgotPassword(): void {
+  //   this.showForgotPasswordModal = false;
+  // }
 
   onRegisterSubmit(): void {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     const phoneRegex = /^[0-9]{10}$/;
 
     if (!emailRegex.test(this.registerEmail)) {
-      alert('Please enter a valid email address!');
+      this.toastr.warning('Please enter a valid email address!');
       return;
     }
 
     if (!phoneRegex.test(this.registerPhone)) {
-      alert('Please enter a valid 10-digit phone number!');
+      this.toastr.warning('Please enter a valid 10-digit phone number!');
       return;
     }
 
     if (this.registerPassword.length < 6) {
-      alert('Password must be at least 6 characters long!');
+      this.toastr.warning('Password must be at least 6 characters long!');
       return;
     }
 
     if (this.registerPassword !== this.registerConfirmPassword) {
-      alert('Passwords do not match!');
+      this.toastr.warning('Passwords do not match!');
       return;
     }
 
-    this.http.post('/api/users/register', {
+    this.http.post('http://localhost:8080/api/users/register', {
       name: this.registerName,
       email: this.registerEmail,
       phone: this.registerPhone,
       password: this.registerPassword
-    }).subscribe({
-      next: () => {
-        alert('Registration successful!');
-        this.closeRegister(); 
+    }, { responseType: 'text' }).subscribe({
+      next: (response) => {
+        this.toastr.success(response);
+        this.closeRegister();
       },
       error: () => {
-        alert('Registration failed!');
+        this.toastr.error('Registration failed!');
       }
     });
   }
 
-  closeRegister(): void { 
+  closeRegister(): void {
     this.showRegisterModal = false;
     this.registerName = '';
     this.registerEmail = '';
@@ -97,4 +113,30 @@ export class HomeComponent {
     this.registerPassword = '';
     this.registerConfirmPassword = '';
   }
+  forgotPasswordEmail: string = '';
+
+onForgotPasswordSubmit(): void {
+  if (!this.forgotPasswordEmail) {
+    this.toastr.warning('Please enter your email!');
+    return;
+  }
+
+  this.http.post('http://localhost:8080/api/users/forgot-password', {
+    email: this.forgotPasswordEmail
+  }, { responseType: 'text' }).subscribe({
+    next: (response) => {
+      this.toastr.success('Password reset link sent to your email.');
+      this.closeForgotPassword();
+    },
+    error: (err) => {
+      console.error(err);
+      this.toastr.error('Error sending reset email.');
+    }
+  });
+}
+closeForgotPassword(): void {
+  this.showForgotPasswordModal = false;
+  this.forgotPasswordEmail = '';
+}
+
 }
