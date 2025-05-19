@@ -8,4 +8,4 @@ import { RouterModule } from '@angular/router';
   templateUrl: './admin-orders.component.html',
   styleUrls: ['./admin-orders.component.scss',]
 })
-export class AdminOrdersComponent {}
+export class AdminOrdersComponent  { }
