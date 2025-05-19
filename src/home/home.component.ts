@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
-import { ToastrService } from 'ngx-toastr'; // Toast import
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-home',
@@ -28,7 +28,7 @@ export class HomeComponent implements OnInit {
   constructor(
     private router: Router,
     private http: HttpClient,
-    private toastr: ToastrService // Inject toast service
+    private toastr: ToastrService
   ) {}
 
   ngOnInit() {
@@ -36,6 +36,9 @@ export class HomeComponent implements OnInit {
   }
 
   onLoginClick(): void {
+    const adminEmail = 'jalakandeswar.c.p@gmail.com';  
+    const adminPassword = 'jalakandeswar';       
+  
     this.http.post('http://localhost:8080/api/users/login', {
       email: this.Email,
       password: this.password
@@ -43,7 +46,13 @@ export class HomeComponent implements OnInit {
       next: () => {
         this.toastr.success('Login successful!');
         this.showModal = false;
-        this.router.navigate(['/dashboard']);
+  
+      
+        if (this.Email === adminEmail && this.password === adminPassword) {
+          this.router.navigate(['/admin-dashboard']);
+        } else {
+          this.router.navigate(['/dashboard']);
+        }
       },
       error: () => {
         this.toastr.error('Login failed!');
@@ -61,9 +70,6 @@ export class HomeComponent implements OnInit {
     this.showRegisterModal = true;
   }
 
-  // closeForgotPassword(): void {
-  //   this.showForgotPasswordModal = false;
-  // }
 
   onRegisterSubmit(): void {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;

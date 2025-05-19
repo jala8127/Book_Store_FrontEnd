@@ -1,0 +1,119 @@
+<div class="container mt-4">
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h3>Library Management</h3>
+    <button class="btn btn-primary" (click)="openAddModal()">Add Book</button>
+  </div>
+
+  <!-- Search Bar -->
+  <div class="mb-3">
+    <input type="text" class="form-control" placeholder="Search by title, author, or genre" [(ngModel)]="searchTerm" (input)="filterBooks()" />
+  </div>
+
+  <!-- Book Table -->
+  <table class="table table-striped bg-white text-dark">
+    <thead class="table-primary">
+      <tr>
+        <th>Book ID</th>
+        <th>Title</th>
+        <th>Price</th>
+        <th>Stock</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let book of filteredBooks">
+        <td>{{ book.id }}</td>
+        <td>{{ book.title }}</td>
+        <td>₹{{ book.price }}</td>
+        <td>{{ book.stock }}</td>
+        <td>
+          <button class="btn btn-sm btn-warning me-2" (click)="openEditModal(book)">Edit</button>
+          <button class="btn btn-sm btn-danger" (click)="openConfirmDeleteModal(book.id)">Delete</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- Toast Notification -->
+  <div class="position-fixed top-0 end-0 p-3" style="z-index: 1055">
+    <div id="successToast" class="toast align-items-center text-white bg-success border-0" role="alert">
+      <div class="d-flex">
+        <div class="toast-body">
+          Book added successfully!
+        </div>
+        <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Confirm Delete Modal -->
+  <div class="modal fade" id="confirmDeleteModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content text-dark">
+        <div class="modal-header">
+          <h5 class="modal-title">Confirm Delete</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          Are you sure you want to delete this book?
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger" (click)="confirmDelete()">Delete</button>
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Add/Edit Book Modal -->
+  <div class="modal fade" id="bookModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content text-dark" *ngIf="selectedBook">
+        <div class="modal-header">
+          <h5 class="modal-title">{{ isEditMode ? 'Edit Book' : 'Add Book' }}</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <form (ngSubmit)="saveBook()">
+          <div class="modal-body row g-3">
+            <div class="col-md-6">
+              <label>Title</label>
+              <input type="text" class="form-control" [(ngModel)]="selectedBook.title" name="title" required />
+            </div>
+            <div class="col-md-6">
+              <label>Author</label>
+              <input type="text" class="form-control" [(ngModel)]="selectedBook.author" name="author" required />
+            </div>
+            <div class="col-md-6">
+              <label>Price</label>
+              <input type="number" class="form-control" [(ngModel)]="selectedBook.price" name="price" required />
+            </div>
+            <div class="col-md-6">
+              <label>Stock</label>
+              <input type="number" class="form-control" [(ngModel)]="selectedBook.stock" name="stock" required />
+            </div>
+            <div class="col-md-6">
+              <label>Genre</label>
+              <input type="text" class="form-control" [(ngModel)]="selectedBook.genre" name="genre" />
+            </div>
+            <div class="col-md-6">
+              <label>Category</label>
+              <input type="text" class="form-control" [(ngModel)]="selectedBook.category" name="category" />
+            </div>
+            <div class="col-12">
+              <label>Description</label>
+              <textarea class="form-control" rows="3" [(ngModel)]="selectedBook.description" name="description"></textarea>
+            </div>
+            <div class="col-12">
+              <label>Image URL</label>
+              <input type="text" class="form-control" [(ngModel)]="selectedBook.imageUrl" name="imageUrl" />
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="submit" class="btn btn-success">{{ isEditMode ? 'Update' : 'Add' }} Book</button>
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,21 @@
+<div class="dashboard-wrapper">
+  <!-- Top Bar -->
+  <div class="top-bar d-flex justify-content-between align-items-center">
+    <div class="logo">BookStore</div>
+    <i class="bi bi-person-circle fs-3 profile-icon"></i>
+  </div>
+
+  <!-- Nav Bar -->
+  <nav class="nav-bar">
+    <ul>
+      <li><a routerLink="/admin-dashboard/home">Home</a></li>
+      <li><a routerLink="/admin-dashboard/library">Library</a></li>
+      <li><a routerLink="/admin-dashboard/orders">Orders</a></li>
+    </ul>
+  </nav>
+
+  <!-- Content -->
+  <div class="content-area">
+    <router-outlet></router-outlet>
+  </div>
+</div>
