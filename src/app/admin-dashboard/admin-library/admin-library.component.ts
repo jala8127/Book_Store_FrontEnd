@@ -58,6 +58,7 @@ export class AdminLibraryComponent {
     this.filteredBooks = this.books.filter(book =>
       (book.title?.toLowerCase().includes(term) || false) ||
       (book.author?.toLowerCase().includes(term) || false) ||
+      (book.category?.toLowerCase().includes(term) || false) ||
       (book.genre?.toLowerCase().includes(term) || false)
     );
   }

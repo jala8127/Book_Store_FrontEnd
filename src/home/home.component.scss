@@ -1,5 +1,5 @@
 .demo {
-     background-color: rgba(50, 177, 216, 0.852);
+     background-color: rgba(6, 182, 235, 0.852);
      min-width: 100%;
      min-height: 100vh;
      position: fixed;
@@ -8,6 +8,9 @@
      align-items: center;
      flex-direction: column;
    }
+   .demo h1 {
+    color: rgb(246, 242, 242);
+  }
    
    .box {
      min-height: fit-content;
@@ -22,7 +25,7 @@
    }
    
    .demo h1 {
-     text-shadow: 2px 2px rgb(105, 154, 173);
+     text-shadow: 2px 2px rgb(109, 114, 116);
      font-family:Verdana ;
      margin-bottom: 20px;
    }
@@ -37,7 +40,7 @@
      bottom: 200px;
      right: 120px;
      padding: 10px 20px;
-     background-color: #53c0e1;
+     background-color: rgba(6, 182, 235, 0.852);;
      color: white ;
      border: none;
      border-radius: 6px;
@@ -48,7 +51,7 @@
    }
    
    .login-button:hover {
-     background-color: #0298d3;
+     background-color: #0482b4;
    }
    .modal-login {
     background-color: #53c0e1;

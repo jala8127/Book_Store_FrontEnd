@@ -25,4 +25,12 @@ export class BookService {
   deleteBook(id: number): Observable<any> {
     return this.http.delete<any>(`${this.baseUrl}/${id}`);
   }
+
+  getTotalBooks(): Observable<number> {
+    return this.http.get<number>(`${this.baseUrl}/count`);
+  }
+
+  getOutOfStockBooks(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.baseUrl}/out-of-stock`);
+  }
 }

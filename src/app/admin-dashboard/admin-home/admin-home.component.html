@@ -1,3 +1,49 @@
-<div style="display: flex; justify-content: center;">
-<img src="assets/images/bookstore.jpg" alt="Home Page Photo" style="width:800px ;height: 500px;" />
-</div>
+<div class="container mt-4">
+     <div class="row">
+       <!-- Total Varieties -->
+       <div class="col-md-3 mb-3">
+         <div class="card text-white bg-primary">
+           <div class="card-body">
+             <h5 class="card-title">Total Books</h5>
+             <p class="card-text display-6">{{ totalBooks }}</p>
+           </div>
+         </div>
+       </div>
+   
+       <!-- Out of Stock -->
+       <div class="col-md-3 mb-3">
+         <div class="card text-white bg-danger">
+           <div class="card-body">
+             <h5 class="card-title">Out of Stock</h5>
+             <p class="card-text display-6">{{ outOfStockCount }}</p>
+           </div>
+         </div>
+       </div>
+   
+     <!-- Total Orders -->
+     <div class="col-md-3 mb-3">
+       <div class="card text-white bg-success">
+         <div class="card-body">
+           <h5 class="card-title">Total Orders</h5>
+           <p class="card-text display-6">{{ totalOrders }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  <div class="row">
+      <!-- Customer Requests -->
+      <div class="col-md-6 mb-3">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">Customer Requests</h5>
+            <ul class="list-group list-group-flush">
+             <li class="list-group-item" *ngFor="let request of customerRequests">
+                {{ request.title }} by {{ request.author }} - {{ request.count }} requests
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+   

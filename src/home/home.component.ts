@@ -32,10 +32,11 @@ export class HomeComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.showModal = true;
+    this.showModal = false;
   }
 
   onLoginClick(): void {
+    this.showModal = true ;
     const adminEmail = 'jalakandeswar.c.p@gmail.com';  
     const adminPassword = 'jalakandeswar';       
   

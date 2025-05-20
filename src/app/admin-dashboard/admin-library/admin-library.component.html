@@ -6,15 +6,18 @@
 
   <!-- Search Bar -->
   <div class="mb-3">
-    <input type="text" class="form-control" placeholder="Search by title, author, or genre" [(ngModel)]="searchTerm" (input)="filterBooks()" />
+    <input type="text" class="form-control" placeholder="Search by title, author, category, or genre" [(ngModel)]="searchTerm" (input)="filterBooks()" />
   </div>
-
-  <!-- Book Table -->
-  <table class="table table-striped bg-white text-dark">
-    <thead class="table-primary">
+  <!-- Scrollable Table Wrapper -->
+<div class="table-container">
+  <table class="table table-striped bg-white text-dark colored-border-table">    
+    <thead class="table-primary sticky-header">
       <tr>
         <th>Book ID</th>
         <th>Title</th>
+        <th>Author</th>
+        <th>Category</th>
+        <th>Genre</th>
         <th>Price</th>
         <th>Stock</th>
         <th>Actions</th>
@@ -24,6 +27,9 @@
       <tr *ngFor="let book of filteredBooks">
         <td>{{ book.id }}</td>
         <td>{{ book.title }}</td>
+        <td>{{book.author}}</td>
+        <td>{{ book.category }}</td>
+        <td>{{ book.genre }}</td>
         <td>₹{{ book.price }}</td>
         <td>{{ book.stock }}</td>
         <td>
@@ -33,6 +39,7 @@
       </tr>
     </tbody>
   </table>
+</div>
 
   <!-- Toast Notification -->
   <div class="position-fixed top-0 end-0 p-3" style="z-index: 1055">
@@ -66,53 +73,71 @@
   </div>
 
   <!-- Add/Edit Book Modal -->
-  <div class="modal fade" id="bookModal" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-      <div class="modal-content text-dark" *ngIf="selectedBook">
-        <div class="modal-header">
-          <h5 class="modal-title">{{ isEditMode ? 'Edit Book' : 'Add Book' }}</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <form (ngSubmit)="saveBook()">
-          <div class="modal-body row g-3">
-            <div class="col-md-6">
-              <label>Title</label>
-              <input type="text" class="form-control" [(ngModel)]="selectedBook.title" name="title" required />
+<div class="modal fade" id="bookModal" tabindex="-1" aria-labelledby="bookModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content bg-light text-dark">
+      <div class="modal-header">
+        <h5 class="modal-title" id="bookModalLabel">{{ isEditMode ? 'Edit Book' : 'Add Book' }}</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+
+        <form>
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <label for="title" class="form-label">Title</label>
+              <input type="text" id="title" class="form-control" [(ngModel)]="selectedBook.title" name="title" required>
             </div>
-            <div class="col-md-6">
-              <label>Author</label>
-              <input type="text" class="form-control" [(ngModel)]="selectedBook.author" name="author" required />
+
+            <div class="col-md-6 mb-3">
+              <label for="author" class="form-label">Author</label>
+              <input type="text" id="author" class="form-control" [(ngModel)]="selectedBook.author" name="author" required>
             </div>
-            <div class="col-md-6">
-              <label>Price</label>
-              <input type="number" class="form-control" [(ngModel)]="selectedBook.price" name="price" required />
+
+            <div class="col-md-6 mb-3">
+              <label for="price" class="form-label">Price</label>
+              <input type="number" id="price" class="form-control" [(ngModel)]="selectedBook.price" name="price">
             </div>
-            <div class="col-md-6">
-              <label>Stock</label>
-              <input type="number" class="form-control" [(ngModel)]="selectedBook.stock" name="stock" required />
+
+            <div class="col-md-6 mb-3">
+              <label for="stock" class="form-label">Stock</label>
+              <input type="number" id="stock" class="form-control" [(ngModel)]="selectedBook.stock" name="stock">
             </div>
-            <div class="col-md-6">
-              <label>Genre</label>
-              <input type="text" class="form-control" [(ngModel)]="selectedBook.genre" name="genre" />
+
+            <div class="col-md-6 mb-3">
+              <label for="category" class="form-label">Category</label>
+              <input type="text" id="category" class="form-control" [(ngModel)]="selectedBook.category" name="category">
             </div>
-            <div class="col-md-6">
-              <label>Category</label>
-              <input type="text" class="form-control" [(ngModel)]="selectedBook.category" name="category" />
+
+            <div class="col-md-6 mb-3">
+              <label for="genre" class="form-label">Genre</label>
+              <input type="text" id="genre" class="form-control" [(ngModel)]="selectedBook.genre" name="genre">
             </div>
-            <div class="col-12">
-              <label>Description</label>
-              <textarea class="form-control" rows="3" [(ngModel)]="selectedBook.description" name="description"></textarea>
+
+            <div class="col-12 mb-3">
+              <label for="description" class="form-label">Description</label>
+              <textarea id="description" class="form-control" [(ngModel)]="selectedBook.description" name="description" rows="2"></textarea>
             </div>
-            <div class="col-12">
-              <label>Image URL</label>
-              <input type="text" class="form-control" [(ngModel)]="selectedBook.imageUrl" name="imageUrl" />
+
+            <div class="col-12 mb-3">
+              <label for="imageUrl" class="form-label">Image URL</label>
+              <input type="text" id="imageUrl" class="form-control" [(ngModel)]="selectedBook.imageUrl" name="imageUrl">
             </div>
-          </div>
-          <div class="modal-footer">
-            <button type="submit" class="btn btn-success">{{ isEditMode ? 'Update' : 'Add' }} Book</button>
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+
+            <!-- Image Preview -->
+            <div class="col-12 text-center mb-3" *ngIf="selectedBook.imageUrl">
+              <img [src]="selectedBook.imageUrl" alt="Book Cover" class="img-thumbnail" style="max-height: 180px; object-fit: contain;" />
+              <p>{{selectedBook.imageUrl}}</p>
+            </div>
           </div>
         </form>
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+        <button type="button" class="btn btn-primary" (click)="saveBook()">
+          {{ isEditMode ? 'Update' : 'Add' }}
+        </button>
       </div>
     </div>
   </div>
