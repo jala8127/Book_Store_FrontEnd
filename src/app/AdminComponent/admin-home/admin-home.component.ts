@@ -19,6 +19,9 @@ export class AdminHomeComponent implements OnInit {
   customerRequests: any[] = [];
   totalOrders: number = 0;
 
+  // Add wishedBooks property
+  wishedBooks: any[] = [];
+
   constructor(
     private bookService: BookService,
     private orderService: OrderService,
@@ -30,6 +33,13 @@ export class AdminHomeComponent implements OnInit {
     this.fetchOutOfStockBooks();
     this.fetchCustomerRequests();
     this.fetchTotalOrders();
+
+    // Initialize wishedBooks - replace with API call if needed
+    this.wishedBooks = [
+      { title: 'The Witcher',imageUrl: 'assets/images/witcher.webp' },
+      { title: 'The Hobbit',imageUrl: 'assets/images/hobbit.webp' },
+      { title: 'The Martian',imageUrl: 'assets/images/martian.jpeg' }
+    ];
   }
 
   fetchTotalBooks() {
@@ -56,5 +66,4 @@ export class AdminHomeComponent implements OnInit {
       this.totalOrders = count;
     });
   }
-  
 }

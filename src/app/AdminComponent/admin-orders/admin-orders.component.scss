@@ -1,0 +1,18 @@
+
+   .nav-wrapper {
+     max-width: 600px;  /* Adjust this width as needed */
+     margin: 0 auto;    /* Centers the navbar */
+   }
+   .nav-link{
+     color:#f9f9fa;
+   }
+   .nav-link.active{
+    background-color: rgb(9, 117, 240);
+   }
+   .nav-link {
+    color: #fdfdff;
+    padding: 10px 15px;
+    text-decoration: none;
+    font-size: 20px;  /* Increase text size */
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }

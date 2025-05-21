@@ -1,0 +1,196 @@
+<div class="container mt-4">
+  <!-- Header -->
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h3>Library Management</h3>
+    <button class="btn btn-primary" (click)="openAddModal()">Add Book</button>
+  </div>
+
+  <!-- Search Bar -->
+  <div class="mb-3">
+    <input
+      type="text"
+      class="form-control"
+      placeholder="Search by title, author, category, or genre"
+      [(ngModel)]="searchTerm"
+      (input)="filterBooks()" />
+  </div>
+
+  <!-- Book Table -->
+  <div class="table-responsive table-container">
+    <table class="table table-striped bg-white text-dark colored-border-table">
+      <thead class="table-primary sticky-header">
+        <tr>
+          <th>Book ID</th>
+          <th>Title</th>
+          <th>Author</th>
+          <th>Category</th>
+          <th>Genre</th>
+          <th>Price</th>
+          <th>Stock</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let book of filteredBooks">
+          <td>{{ book.id }}</td>
+          <td>{{ book.title }}</td>
+          <td>{{ book.author }}</td>
+          <td>{{ book.category }}</td>
+          <td>{{ book.genre }}</td>
+          <td>₹{{ book.price }}</td>
+          <td>{{ book.stock }}</td>
+          <td>
+            <button class="btn btn-sm btn-warning me-2" (click)="openEditModal(book)">Edit</button>
+            <button class="btn btn-sm btn-danger" (click)="confirmDelete(book.id!)">Delete</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Toast -->
+  <div class="position-fixed top-0 end-0 p-3" style="z-index: 1055">
+    <div id="successToast" class="toast align-items-center text-white bg-success border-0" role="alert" aria-live="polite" aria-atomic="true">
+      <div class="d-flex">
+        <div class="toast-body">Operation successful!</div>
+        <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Delete Confirmation Modal -->
+  <div class="modal fade" id="confirmDeleteModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content text-dark">
+        <div class="modal-header">
+          <h5 class="modal-title">Confirm Delete</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">Are you sure you want to delete this book?</div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger" (click)="deleteBook()">Delete</button>
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ADD BOOK MODAL -->
+  <div class="modal fade" id="addBookModal" tabindex="-1" aria-labelledby="addBookModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content bg-light text-dark">
+        <div class="modal-header">
+          <h5 class="modal-title" id="addBookModalLabel">Add Book</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form (ngSubmit)="saveBook()">
+            <div class="row">
+              <!-- Book Fields -->
+                <div class="col-md-6 mb-3" *ngFor="let field of editableFields">
+                  <label [for]="field" class="form-label">{{ field | titlecase }}</label>
+                  <input
+                    [id]="field"
+                    [name]="field"
+                    class="form-control"
+                    [(ngModel)]="selectedBook[field]"
+                    [ngModelOptions]="{ standalone: true }"
+                    [type]="(field === 'price' || field === 'stock') ? 'number' : 'text'"
+                    [min]="(field === 'price' || field === 'stock') ? 0 : null"
+                    required />
+                </div>
+
+              <div class="col-12 mb-3">
+                <label for="description" class="form-label">Description</label>
+                <textarea id="description" class="form-control" [(ngModel)]="selectedBook.description" name="description" rows="2"></textarea>
+              </div>
+
+              <div class="col-12 mb-3">
+                <label for="addImageFile" class="form-label">Book Cover Image</label>
+                <input type="file" id="addImageFile" class="form-control" (change)="onFileSelected($event)" accept="image/*" />
+              </div>
+
+              <div class="col-12 text-center mb-3" *ngIf="imagePreview">
+                <img [src]="imagePreview" alt="Preview" class="img-thumbnail" style="max-height: 180px; object-fit: contain;" />
+              </div>
+            </div>
+          </form>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" (click)="closeModal('addBookModal')">Cancel</button>
+          <button type="submit" class="btn btn-primary" (click)="saveBook()">Add Book</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<!-- EDIT BOOK MODAL -->
+<div class="modal fade" id="editBookModal" tabindex="-1" aria-labelledby="editBookModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content bg-light text-dark">
+      <div class="modal-header">
+        <h5 class="modal-title" id="editBookModalLabel">Edit Book</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+
+      <div class="modal-body">
+        <form (ngSubmit)="saveBook()">
+          <div class="row">
+              <div *ngIf="imagePreview" class="col-md-4 d-flex align-items-start justify-content-center mb-3">
+                
+                <img *ngIf="imagePreview" [src]="imagePreview" alt="Book Image" class="img-fluid mb-3" style="max-height: 300px;" />
+              </div>
+            <!-- Fields Column -->
+            <div class="col-md-8">
+              <div class="mb-2">
+                <label for="titleEdit" class="form-label">Title</label>
+                <input type="text" id="titleEdit" class="form-control" [(ngModel)]="selectedBook.title"
+                       name="title" [ngModelOptions]="{ standalone: true }" required />
+              </div>
+              <div class="mb-2">
+                <label for="authorEdit" class="form-label">Author</label>
+                <input type="text" id="authorEdit" class="form-control" [(ngModel)]="selectedBook.author"
+                       name="author" [ngModelOptions]="{ standalone: true }" required />
+              </div>
+              <div class="mb-2">
+                <label for="categoryEdit" class="form-label">Category</label>
+                <input type="text" id="categoryEdit" class="form-control" [(ngModel)]="selectedBook.category"
+                       name="category" [ngModelOptions]="{ standalone: true }" required />
+              </div>
+              <div class="mb-2">
+                <label for="genreEdit" class="form-label">Genre</label>
+                <input type="text" id="genreEdit" class="form-control" [(ngModel)]="selectedBook.genre"
+                       name="genre" [ngModelOptions]="{ standalone: true }" required />
+              </div>
+            </div>
+          </div>
+
+          <!-- Description -->
+          <div class="row mt-3">
+            <div class="col-12 text-center">
+              <label for="descriptionEdit" class="form-label fw-bold">Description</label>
+              <textarea id="descriptionEdit" class="form-control w-75 mx-auto"
+                        [(ngModel)]="selectedBook.description" name="description" rows="3"
+                        [ngModelOptions]="{ standalone: true }"></textarea>
+            </div>
+          </div>
+
+          <!-- Update Book Cover Image -->
+          <div class="row mt-3">
+            <div class="col-12 text-center">
+              <label for="editImageFile" class="form-label fw-bold">Update Book Cover Image</label>
+              <input type="file" id="editImageFile" class="form-control w-50 mx-auto mt-2"
+                     (change)="onFileSelected($event)" accept="image/*" />
+            </div>
+          </div>
+        </form>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="closeModal('editBookModal')">Cancel</button>
+        <button type="submit" class="btn btn-success" (click)="saveBook()">Update Book</button>
+      </div>
+    </div>
+  </div>
+</div>

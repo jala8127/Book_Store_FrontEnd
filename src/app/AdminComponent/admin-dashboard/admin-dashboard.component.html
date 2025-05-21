@@ -1,0 +1,67 @@
+<div class="dashboard-wrapper">
+  <!-- Top Bar -->
+  <div class="top-bar d-flex justify-content-between align-items-center px-3 py-2 border-bottom">
+    <div class="logo fw-bold fs-4">BookStore</div>
+
+    <div class="dropdown custom-dropdown" [class.show]="isDropdownOpen">
+      <a class="btn nav-link p-0 me-3"
+         href="#"
+         role="button"
+         (click)="toggleDropdown($event)">
+        <i class="bi bi-person-circle fs-3"></i>
+      </a>
+
+      <ul class="dropdown-menu dropdown-menu-end" *ngIf="isDropdownOpen">
+        <li><a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#addAdminModal">Add Admin</a></li>
+        <li><hr class="dropdown-divider"></li>
+        <li><a class="dropdown-item" (click)="logout()">Logout</a></li>
+      </ul>
+    </div>
+  </div>
+  <!-- Add Admin Modal -->
+<div class="modal fade" id="addAdminModal" tabindex="-1" aria-labelledby="addAdminModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="addAdminModalLabel">Add Admin</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form #adminForm="ngForm" (ngSubmit)="submitAdminForm()">
+          <div class="mb-3">
+            <label>Email</label>
+            <input type="email" class="form-control" required [(ngModel)]="adminData.email" name="email">
+          </div>
+          <div class="mb-3">
+            <label>Phone Number</label>
+            <input type="tel" class="form-control" required [(ngModel)]="adminData.phone" name="phone">
+          </div>
+          <div class="mb-3">
+            <label>New Password</label>
+            <input type="password" class="form-control" required [(ngModel)]="adminData.password" name="password">
+          </div>
+          <div class="mb-3">
+            <label>Confirm Password</label>
+            <input type="password" class="form-control" required [(ngModel)]="adminData.confirmPassword" name="confirmPassword">
+          </div>
+          <button type="submit" class="btn btn-primary">Add Admin</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+  <!-- Nav Bar -->
+  <nav class="nav-bar">
+    <ul>
+      <li><a routerLink="/admin-dashboard/home">Home</a></li>
+      <li><a routerLink="/admin-dashboard/library">Library</a></li>
+      <li><a routerLink="/admin-dashboard/orders">Orders</a></li>
+    </ul>
+  </nav>
+
+  <!-- Content -->
+  <div class="content-area p-3">
+    <router-outlet></router-outlet>
+  </div>
+</div>

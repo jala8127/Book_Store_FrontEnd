@@ -1,5 +1,5 @@
 .table-container {
-     max-height: 380px; /* adjust height as needed */
+     height: 380px; /* adjust height as needed */
      overflow-y: auto;
      border: 1px solid #dee2e6;
      border-radius: 5px;
@@ -11,14 +11,17 @@
      background-color: #cfe2ff !important;
      z-index: 1;
    }
-//    .colored-border-table {
-//      border: 0.5px solid black; /* Blue border */
-//      border-collapse: separate; /* Optional: makes the border clearer */
-//      border-radius: 6px;
-//      overflow: hidden;
-//    }
    
    .colored-border-table th,
    .colored-border-table td {
      border: 1px solid rgb(205, 203, 203); /* Same border color for cells */
    }
+   .table-container {
+    max-height: 60vh;
+    overflow-y: auto;
+  }
+  .sticky-header th {
+    position: sticky;
+    top: 0;
+    background: #f8f9fa;
+  }

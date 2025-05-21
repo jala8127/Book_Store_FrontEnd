@@ -2,35 +2,80 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
+export interface Book {
+  id?: number;
+  title: string;
+  author: string;
+  category: string;
+  genre: string;
+  price: number;
+  stock: number;
+  description: string;
+  imageUrl: string;
+}
+
 @Injectable({
   providedIn: 'root'
 })
 export class BookService {
-  private baseUrl = 'http://localhost:8080/api/books'; // adjust path as needed
+  private baseUrl = 'http://localhost:8080/api/books';
 
   constructor(private http: HttpClient) {}
 
-  getBooks(): Observable<any[]> {
-    return this.http.get<any[]>(this.baseUrl);
+  // Get all books
+  getBooks(): Observable<Book[]> {
+    return this.http.get<Book[]>(`${this.baseUrl}`);
   }
 
-  addBook(book: any): Observable<any> {
-    return this.http.post<any>(`${this.baseUrl}/add`, book);
+  // Get out-of-stock books
+  getOutOfStockBooks(): Observable<Book[]> {
+    return this.http.get<Book[]>(`${this.baseUrl}/out-of-stock`);
   }
+
+  // Get book by ID
+  getBookById(id: number): Observable<Book> {
+    return this.http.get<Book>(`${this.baseUrl}/${id}`);
+  }
+
+  // Add book without image (optional)
+  addBook(book: Book): Observable<Book> {
+    return this.http.post<Book>(`${this.baseUrl}`, book);
+  }
+
+  // Update book without image (optional)
+  updateBook(id: number | undefined, book: Book): Observable<Book> {
+    return this.http.put<Book>(`${this.baseUrl}/${id}`, book);
+  }
+
+  // Add book with image file
+  addBookWithImage(book: Book, imageFile: File | null): Observable<any> {
+    const formData = new FormData();
+    const bookBlob = new Blob([JSON.stringify(book)], { type: 'application/json' });
+    formData.append('book', bookBlob);
   
-  updateBook(book: any): Observable<any> {
-    return this.http.put<any>(`${this.baseUrl}/${book.id}`, book);
+    if (imageFile) {
+      formData.append('imageFile', imageFile);
+    }
+  
+    return this.http.post(`${this.baseUrl}/add-with-image`, formData);
   }
 
+  // Update book with image file
+  updateBookWithImage(id: number | undefined, book: Book, imageFile: File | null): Observable<any> {
+    const formData = new FormData();
+  
+    const bookBlob = new Blob([JSON.stringify(book)], { type: 'application/json' });
+    formData.append('book', bookBlob);
+  
+    if (imageFile) {
+      formData.append('imageFile', imageFile);
+    }
+  
+    return this.http.put(`${this.baseUrl}/update-with-image/${id}`, formData);
+  }
+
+  // Delete book
   deleteBook(id: number): Observable<any> {
-    return this.http.delete<any>(`${this.baseUrl}/${id}`);
-  }
-
-  getTotalBooks(): Observable<number> {
-    return this.http.get<number>(`${this.baseUrl}/count`);
-  }
-
-  getOutOfStockBooks(): Observable<any[]> {
-    return this.http.get<any[]>(`${this.baseUrl}/out-of-stock`);
+    return this.http.delete(`${this.baseUrl}/${id}`);
   }
 }
