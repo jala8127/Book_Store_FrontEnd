@@ -6,12 +6,12 @@
   display: flex;
   flex-direction: column;
   height: 100vh;
-  background-color: #0cacf0;
+  background-color: #00b0ff;
   color: white;
 }
 
 .top-bar {
-  background-color: #0cacf0;
+  background-color: #00b0ff;
   padding: 10px 20px;
 
   .logo {
@@ -76,7 +76,7 @@
       color: #333;
 
       &:hover {
-        color: #089fe0;
+        color: #088ae0;
       }
     }
   }

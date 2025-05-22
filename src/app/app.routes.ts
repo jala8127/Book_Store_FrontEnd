@@ -1,24 +1,36 @@
 import { Routes } from '@angular/router';
-import { HomeComponent } from './home/home.component';
-import { AdminDashboardComponent } from './AdminComponent/admin-dashboard/admin-dashboard.component';
-import { DashboardComponent } from './UserComponent/dashboard/dashboard.component';
-import { AdminOrdersComponent } from './AdminComponent/admin-orders/admin-orders.component';
-import { AdminHomeComponent } from './AdminComponent/admin-home/admin-home.component';
 
-import { AllOrdersComponent } from './AdminComponent/admin-orders/all-orders/all-orders.component';
-import { PendingComponent } from './AdminComponent/admin-orders/pending/pending.component';
-import { CompletedComponent } from './AdminComponent/admin-orders/completed/completed.component';
-import { AdminLibraryComponent } from './AdminComponent/admin-library/admin-library.component';
+import { HomeComponent } from './home/home.component';
+
+// Admin Imports
+import { AdminDashboardComponent } from './Admin/admin-dashboard/admin-dashboard.component';
+import { AdminHomeComponent } from './Admin/admin-home/admin-home.component';
+import { AdminOrdersComponent } from './Admin/admin-orders/admin-orders.component';
+import { AllOrdersComponent } from './Admin/admin-orders/all-orders/all-orders.component';
+import { PendingComponent } from './Admin/admin-orders/pending/pending.component';
+import { CompletedComponent } from './Admin/admin-orders/completed/completed.component';
+import { AdminLibraryComponent } from './Admin/admin-library/admin-library.component';
+
+// User Imports
+import { DashboardComponent } from './User/dashboard/dashboard.component';
+import { UserHomeComponent } from './User/user-home/user-home.component';
+import { LibraryComponent } from './User/library/library.component';
+import { OrdersComponent } from './User/orders/orders.component';
+import { UserCartComponent } from './User/user-cart/user-cart.component';
 
 export const routes: Routes = [
-  { path: '', component: HomeComponent },
-  { path: 'dashboard', component: DashboardComponent },
+  // Default route
+  { path: '', redirectTo: 'home', pathMatch: 'full' },
 
+  // login page
+  { path: 'home', component: HomeComponent },
+
+  // Admin Routes
   {
     path: 'admin-dashboard',
     component: AdminDashboardComponent,
     children: [
-      { path: '', redirectTo: 'home', pathMatch: 'full' },  // 👈 Redirect /admin-dashboard to /admin-dashboard/home
+      { path: '', redirectTo: 'home', pathMatch: 'full' },
       { path: 'home', component: AdminHomeComponent },
       { path: 'library', component: AdminLibraryComponent },
       {
@@ -30,6 +42,19 @@ export const routes: Routes = [
           { path: 'completed', component: CompletedComponent }
         ]
       }
+    ]
+  },
+
+  // User Routes
+  {
+    path: 'dashboard',
+    component: DashboardComponent,
+    children: [
+      { path: '', redirectTo: 'home', pathMatch: 'full' },
+      { path: 'home', component: UserHomeComponent },
+      { path: 'library', component: LibraryComponent },
+      { path: 'orders', component: OrdersComponent },
+      { path: 'cart', component: UserCartComponent }
     ]
   }
 ];

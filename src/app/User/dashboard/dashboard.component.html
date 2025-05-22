@@ -1,0 +1,37 @@
+<div class="dashboard-wrapper">
+  <!-- Top Bar -->
+  <div class="top-bar d-flex justify-content-between align-items-center px-3 py-2 border-bottom">
+    <div class="logo fw-bold fs-4">BookStore</div>
+
+    <div class="dropdown custom-dropdown" [class.show]="isDropdownOpen">
+      <a class="btn nav-link p-0 me-3"
+         href="#"
+         role="button"
+         (click)="toggleDropdown($event)">
+        <i class="bi bi-person-circle fs-3"></i>
+      </a>
+
+      <ul class="dropdown-menu dropdown-menu-end" *ngIf="isDropdownOpen">
+        <li><a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#DetailsModal">Details</a></li>
+        <li><hr class="dropdown-divider"></li>
+        <li><a class="dropdown-item" (click)="logout()">Logout</a></li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Nav Bar -->
+  <nav class="nav-bar">
+    <ul>
+      <li><a routerLink="/dashboard/home">Home</a></li>
+      <li><a routerLink="/dashboard/library">Library</a></li>
+      <li><a routerLink="/dashboard/orders">Orders</a></li>
+      <li><a routerLink="/dashboard/orders">Cart</a></li>
+      <!-- <li><a routerLink="/dashboard/orders">Help</a></li> -->
+    </ul>
+  </nav>
+
+  <!-- Content -->
+  <div class="content-area p-3">
+    <router-outlet></router-outlet>
+  </div>
+<!-- </div> -->

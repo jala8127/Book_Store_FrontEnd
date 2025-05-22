@@ -1,73 +1,99 @@
-<!-- Main Content -->
-<div class="demo">
-     <h1>Welcome to BookStore</h1>
-     <div class="image-container">
-       <img src="assets/images/login-page.jpeg" alt="Login Page" />
-       <div class="button-wrapper">
-         <button class="login-button btn btn-primary" (click)="showModal = true">Login</button>
-       </div>
-     </div>
-   
-     <!-- Login Modal -->
-     <div *ngIf="showModal" class="modal fade show d-block" style="background-color: rgba(0, 0, 0, 0.5);">
-       <div class="modal-dialog modal-dialog-centered">
-         <div class="modal-content">
-           <div class="modal-header">
-             <h5 class="modal-title">Login</h5>
-             <button type="button" class="btn-close" (click)="showModal = false"></button>
-           </div>
-           <div class="modal-body">
-             <input type="text" [(ngModel)]="Email" class="form-control mb-2" placeholder="Email" />
-             <input type="password" [(ngModel)]="password" class="form-control mb-3" placeholder="Password" />
-             <button class="btn modal-login w-100" (click)="onLoginClick()">Login</button>
-             <div class="text-center mt-3">
-               <a (click)="openForgotPassword()">Forgot Password?</a> |
-               <a (click)="openRegister()">Create New Account</a>
-             </div>
-           </div>
-         </div>
-       </div>
-     </div>
-   
-     <!-- Forgot Password Modal -->
-     <div *ngIf="showForgotPasswordModal" class="modal fade show d-block" style="background-color: rgba(0, 0, 0, 0.5);">
-       <div class="modal-dialog modal-dialog-centered">
-         <div class="modal-content">
-           <div class="modal-header">
-             <h5 class="modal-title">Forgot Password</h5>
-             <button type="button" class="btn-close" (click)="closeForgotPassword()" aria-label="Close"></button>
-           </div>
-           <div class="modal-body">
-             <input
-               type="email"
-               [(ngModel)]="forgotPasswordEmail"
-               placeholder="Enter your email"
-               class="form-control mb-3"
-             />
-             <button class="btn modal-login w-100" (click)="onForgotPasswordSubmit()">Submit</button>
-             <button class="btn btn-secondary w-100 mt-2" (click)="closeForgotPassword()">Cancel</button>
-           </div>
-         </div>
-       </div>
-     </div>
-   
-     <!-- Register Modal -->
-     <div *ngIf="showRegisterModal" class="modal fade show d-block" style="background-color: rgba(0, 0, 0, 0.5);">
-       <div class="modal-dialog modal-dialog-centered">
-         <div class="modal-content">
-           <div class="modal-header">
-             <h5 class="modal-title">Create New Account</h5>
-             <button type="button" class="btn-close" (click)="closeRegister()" aria-label="Close"></button>
-           </div>
-           <div class="modal-body">
-             <input type="text" class="form-control mb-2" [(ngModel)]="registerName" placeholder="Name" />
-             <input type="email" class="form-control mb-2" [(ngModel)]="registerEmail" placeholder="Email" />
-             <input type="text" class="form-control mb-2" [(ngModel)]="registerPhone" placeholder="Phone Number" />
-             <input type="password" class="form-control mb-2" [(ngModel)]="registerPassword" placeholder="Password" />
-             <input type="password" class="form-control mb-3" [(ngModel)]="registerConfirmPassword" placeholder="Confirm Password" />
-             <button class="btn modal-login w-100" (click)="onRegisterSubmit()">Register</button>
-           </div>
-         </div>
-       </div>
-     </div>
-   </div>
+<div class="container-fluid vh-100 d-flex p-0 login-container">
+  <!-- Left Panel -->
+ <div class="left-panel d-none d-md-flex">
+  <img src="assets/images/booklogo.jpeg" class="logo" />
+  <h3 class="loading-text">BOOKSTORE</h3>
+</div>
+
+  <!-- Right Panel -->
+  <div class="right-panel">
+    <h1 class="welcome-text">Welcome to BookStore</h1>
+    
+    <div class="form-wrapper">
+      <div class="top-bar d-flex justify-content-between align-items-center mb-4">
+        <h3 class="login-title text-primary fw-bold">LOGIN</h3>
+        <a (click)="openRegister()" class="register-link">REGISTER</a>
+      </div>
+
+      <form (ngSubmit)="onLoginClick()">
+        <div class="form-group mb-3">
+          <label>Email</label>
+          <input type="text" class="form-control border-0 border-bottom" [(ngModel)]="Email" name="email" placeholder="Enter Your Email" required />
+        </div>
+
+        <div class="form-group position-relative mb-3">
+          <label>Password</label>
+          <input [type]="showPassword ? 'text' : 'password'" class="form-control border-0 border-bottom" [(ngModel)]="password" name="password" placeholder="Enter Your Password" required />
+          <i class="fa toggle-password" [ngClass]="showPassword ? 'fa-eye' : 'fa-eye-slash'" (click)="togglePassword()"></i>
+        </div>
+
+        <div class="forgot mb-4 text-end">
+          <a (click)="openForgotPassword()" class="text-primary cursor-pointer">Forget password?</a>
+        </div>
+
+        <button type="submit" class="btn btn-primary w-100 rounded-pill">LOGIN</button>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- REGISTER PANEL -->
+<div *ngIf="showRegisterModal" class="modal-backdrop d-flex justify-content-center align-items-center">
+  <div class="modal-content-custom p-4 rounded shadow bg-white w-100" style="max-width: 500px;">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <h5 class="fw-bold text-primary">Register</h5>
+      <button type="button" class="btn-close" (click)="closeRegister()"></button>
+    </div>
+    <form (ngSubmit)="onRegisterSubmit()">
+      <div class="mb-3">
+        <label class="form-label">Full Name</label>
+        <input type="text" class="form-control" [(ngModel)]="registerName" name="registerName" required />
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label">Email</label>
+        <input type="email" class="form-control" [(ngModel)]="registerEmail" name="registerEmail" required />
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label">Phone</label>
+        <input type="text" class="form-control" [(ngModel)]="registerPhone" name="registerPhone" required />
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label">Password</label>
+        <input type="password" class="form-control" [(ngModel)]="registerPassword" name="registerPassword" required />
+      </div>
+
+      <div class="mb-4">
+        <label class="form-label">Confirm Password</label>
+        <input type="password" class="form-control" [(ngModel)]="registerConfirmPassword" name="registerConfirmPassword" required />
+      </div>
+
+      <button type="submit" class="btn btn-primary w-100 rounded-pill">Register</button>
+    </form>
+  </div>
+</div>
+
+<!-- FORGOT PASSWORD PANEL -->
+<div *ngIf="showForgotPasswordModal" class="modal-backdrop d-flex justify-content-center align-items-center">
+  <div class="modal-content-custom p-4 rounded shadow bg-white w-100" style="max-width: 500px;">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <h5 class="fw-bold text-primary">Forgot Password</h5>
+      <button type="button" class="btn-close" (click)="closeForgotPassword()"></button>
+    </div>
+    <form (ngSubmit)="onForgotPasswordSubmit()">
+      <div class="mb-3">
+        <label class="form-label">Enter your registered email</label>
+        <input type="email" class="form-control" [(ngModel)]="forgotPasswordEmail" name="forgotPasswordEmail" required />
+      </div>
+
+      <div class="mb-4">
+        <label class="form-label">Enter your registered phone number</label>
+        <input type="tel" class="form-control" [(ngModel)]="forgotPasswordPhone" name="forgotPasswordPhone" required pattern="[0-9]{10}" />
+      </div>
+
+      <button type="submit" class="btn btn-primary w-100 rounded-pill">Send Reset Link</button>
+    </form>
+  </div>
+</div>
