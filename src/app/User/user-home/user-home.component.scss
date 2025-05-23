@@ -1,0 +1,35 @@
+::ng-deep .row {
+  gap: 1.5rem;
+}
+
+::ng-deep .col-md-3 {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+::ng-deep .col-md-3 .card {
+  width: 12rem;
+  height: 8rem;
+  padding: 1rem;
+}
+
+::ng-deep .book-card {
+  width: 140px;
+  height: 210px;
+  margin: 0.4rem;
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.15);
+  border-radius: 8px;
+}
+
+::ng-deep .book-img {
+  width: 100%;
+  height: 150px;
+  object-fit: cover;
+  border-radius: 6px;
+}
+
+::ng-deep .card-title {
+  font-size: 0.80rem;
+  font-weight: 500;
+}

@@ -1,0 +1,115 @@
+/* 1. Prevent the entire page from scrolling */
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100vh;
+  overflow: hidden; 
+}
+.search-bar-container {
+  width: 100%;
+  padding: 0.5rem;
+  background-color: #00b0ff;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.search-bar-container input {
+  max-width: 100vh;
+  border-radius: 10px;
+  height: 50px;
+  margin: 0 auto;
+  display: block;
+}
+
+/* 2. Scrollable container showing 4 cards per row */
+.container {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr); /* 4 cards in a row */
+  gap: 1rem;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 5rem;
+  background-color: #00b0ff;
+  box-sizing: border-box;
+  width: 100%;
+  height: 70vh; /* Full viewport height */
+  scroll-behavior: smooth;
+  margin-left: 55px;
+}
+
+/* Optional: vertical scrollbar styling */
+.container::-webkit-scrollbar {
+  width: 20px;
+}
+.container::-webkit-scrollbar-thumb {
+  background:#00b0ff;
+  border-radius: 0.5px;
+}
+
+/* 3. Card styling */
+.card {
+  background-color: #fcfcfc;
+  height: 370px;
+  width: 240px; /* Fill grid column */
+  border: none;
+  padding: 1.5rem;
+  transition: transform 0.2s ease;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+/* 4. Image styling */
+.card-img-top {
+  height: 280px;
+  width: 190px;
+  border-radius: 6px;
+  margin-bottom: 0rem;
+  object-fit: cover;
+}
+
+/* 5. Text content styling */
+.card-body {
+  padding: 0.5rem;
+  text-align: center;
+}
+
+.card-title {
+  font-size: 1.1rem;
+  margin-bottom: 0rem;
+}
+
+.card-text {
+  font-size: 0.875rem;
+  margin-bottom: -0.5rem;
+}
+.custom-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 1050;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.custom-modal-content {
+  background: white;
+  border-radius: 10px;
+  padding: 20px;
+  max-width: 800px;
+  width: 90%;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+}

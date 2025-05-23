@@ -37,7 +37,7 @@ export class BookService {
     return this.http.get<Book>(`${this.baseUrl}/${id}`);
   }
 
-  // Add book without image (optional)
+  // // Add book without image (optional)
   addBook(book: Book): Observable<Book> {
     return this.http.post<Book>(`${this.baseUrl}`, book);
   }

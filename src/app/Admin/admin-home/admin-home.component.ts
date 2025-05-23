@@ -36,9 +36,11 @@ export class AdminHomeComponent implements OnInit {
 
     // Initialize wishedBooks - replace with API call if needed
     this.wishedBooks = [
-      { title: 'The Witcher',imageUrl: 'assets/images/witcher.webp' },
       { title: 'The Hobbit',imageUrl: 'assets/images/hobbit.webp' },
-      { title: 'The Martian',imageUrl: 'assets/images/martian.jpeg' }
+      { title: 'The Witcher',imageUrl: 'assets/images/witcher.webp' },
+      { title: 'The Martian',imageUrl: 'assets/images/martian.jpeg' },
+      { title: 'The Road',imageUrl: 'assets/images/road.jpg' },
+      { title: 'The Terror',imageUrl: 'assets/images/terror.webp' }
     ];
   }
 

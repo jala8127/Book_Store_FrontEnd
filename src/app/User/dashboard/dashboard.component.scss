@@ -1,13 +1,13 @@
 :host {
   display: block;
   background-color: #00b0ff;
-  min-height: 100vh;
-  color: white;
-  padding: 1rem;
+  height: 100%;
+
 }
 .dashboard-container {
   background-color: #00b0ff;
-  min-height: 100vh;
+  height: 100%;
+  
   color: white;
   padding: 1rem;
 }:host {
@@ -17,7 +17,7 @@
 .dashboard-wrapper {
   display: flex;
   flex-direction: column;
-  height: 100vh;
+  height: 100%;
   background-color: #00b0ff;
   color: white;
 }
@@ -38,7 +38,7 @@
 
 .nav-bar {
   background-color: white;
-  box-shadow: 0 2px 5px rgba(68, 63, 63, 0.1);
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
 
   ul {
     display: flex;
