@@ -22,7 +22,7 @@ export const routes: Routes = [
   // Default route
   { path: '', redirectTo: 'home', pathMatch: 'full' },
 
-  // login page
+  // Login Page
   { path: 'home', component: HomeComponent },
 
   // Admin Routes
@@ -34,12 +34,13 @@ export const routes: Routes = [
       { path: 'home', component: AdminHomeComponent },
       { path: 'library', component: AdminLibraryComponent },
       {
-        path: 'orders',
-        component: AdminOrdersComponent,
-        children: [
-          { path: 'all', component: AllOrdersComponent },
-          { path: 'pending', component: PendingComponent },
-          { path: 'completed', component: CompletedComponent }
+          path: 'orders',
+          component: AdminOrdersComponent,
+          children: [
+               { path: '', redirectTo: 'all', pathMatch: 'full' }, 
+               { path: 'all', component: AllOrdersComponent },
+               { path: 'pending', component: PendingComponent },
+               { path: 'completed', component: CompletedComponent }
         ]
       }
     ]

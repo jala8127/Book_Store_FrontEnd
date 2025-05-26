@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 export interface Book {
-  id?: number;
+  id: number;
   title: string;
   author: string;
   category: string;

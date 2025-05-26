@@ -1,1 +1,47 @@
-<h2>all-orders works!</h2>
+<div class="container my-4">
+  <h4 class="text-center mb-4">All Orders</h4>
+
+  <div *ngIf="allOrders.length > 0; else noOrders">
+    <div *ngFor="let order of allOrders" class="mb-4">
+      <div class="card shadow-sm position-relative w-100">
+        
+        <!-- STATUS BADGE -->
+        <span
+          class="badge position-absolute top-0 end-0 m-2"
+          [ngClass]="{
+            'bg-danger': order.status === 'Pending',
+            'bg-success': order.status === 'Completed'
+          }"
+        >
+          {{ order.status }}
+        </span>
+
+        <div class="card-body">
+          <h5 class="card-title">Order #{{ order.id }}</h5>
+          <p><strong>User Email:</strong> {{ order.email }}</p>
+          <p><strong>Books:</strong> {{ order.bookNames }}</p>
+          <p><strong>Quantities:</strong> {{ order.quantities }}</p>
+          <p><strong>Total:</strong> ₹{{ order.totalAmount }}</p>
+          <p><strong>Payment:</strong> {{ order.paymentMethod }}</p>
+
+          <div class="mt-3">
+            <label for="status-{{ order.id }}"><strong>Change Status:</strong></label>
+            <select
+              class="form-select form-select-sm mt-1"
+              [value]="order.status"
+              (change)="onStatusChange(order.id, $event)"
+              [id]="'status-' + order.id"
+            >
+              <option value="Pending">Pending</option>
+              <option value="Completed">Completed</option>
+            </select>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <ng-template #noOrders>
+    <p class="text-center text-muted">No orders found.</p>
+  </ng-template>
+</div>

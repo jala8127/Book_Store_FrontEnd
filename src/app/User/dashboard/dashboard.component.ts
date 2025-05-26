@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
+import { AuthService } from 'app/services/auth.service';
 
 declare const bootstrap: any;
 
@@ -24,7 +25,7 @@ export class DashboardComponent {
     confirmPassword: ''
   };
 
-  constructor(private router: Router, private toastr: ToastrService) {}
+  constructor(private authService: AuthService,private router: Router, private toastr: ToastrService) {}
 
   toggleDropdown(event: MouseEvent): void {
     event.preventDefault();
@@ -39,10 +40,9 @@ export class DashboardComponent {
     }
   }
 
-  logout(): void {
-    localStorage.clear();
-    this.toastr.success('Logout Successful..!');
-    this.router.navigate(['/']);
-  }
-
+ 
+logout(): void {
+  this.authService.clearUserEmail();
+  this.router.navigate(['/']); // Or login page
+}
   }

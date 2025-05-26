@@ -1,1 +1,101 @@
-<h2>cart works!</h2>
+<div class="cart-wrapper">
+  <!-- CART SECTION -->
+  <div class="cart-section" [ngClass]="{ 'hide-cart': showCheckoutForm }" *ngIf="cart.length !== 0">
+    <h4>Your Cart</h4>
+
+    <div class="cart-item" *ngFor="let item of cart">
+      <img [src]="item.book.imageUrl" alt="{{ item.book.title }}" />
+
+      <div class="details">
+        <h5>{{ item.book.title }}</h5>
+        <p>Price: ₹{{ item.book.price }}</p>
+        <p>Quantity: {{ item.quantity }}</p>
+        <p>Total: ₹{{ item.book.price * item.quantity }}</p>
+      </div>
+
+      <div class="button-group">
+        <button (click)="removeFromCart(item.book.id)">Remove</button>
+        <button class="buy-now" (click)="showCheckout(true, item.book, item.quantity)">Buy Now</button>
+      </div>
+    </div>
+
+    <div class="cart-summary">
+      <h5>Total Price: ₹{{ getTotalPrice() }}</h5>
+      <button (click)="showCheckout()">Place Order</button>
+    </div>
+  </div>
+
+  <!-- EMPTY CART MESSAGE -->
+  <div *ngIf="cart.length === 0" class="empty-cart-container">
+    <div class="empty-cart-box">
+      <h4>Your Cart is Empty</h4>
+    </div>
+  </div>
+
+  <!-- SLIDING CHECKOUT SECTION -->
+  <div class="checkout-panel" [ngClass]="{ 'active': showCheckoutForm }">
+    <h4 *ngIf="isBuyNow && selectedBook">Checkout - {{ selectedBook.title }}</h4>
+    <h4 *ngIf="!isBuyNow">Checkout - All Items</h4>
+
+    <div *ngIf="isBuyNow && selectedBook" class="details">
+      <p><strong>Quantity:</strong> {{ selectedQuantity }}</p>
+      <p><strong>Total:</strong> ₹{{ selectedBook.price * selectedQuantity }}</p>
+    </div>
+
+    <form>
+      <div class="mb-3">
+        <label>Name:</label>
+        <input
+          type="text"
+          class="form-control"
+          [(ngModel)]="orderDetails.name"
+          name="name"
+        />
+      </div>
+
+      <div class="mb-3">
+        <label>Phone:</label>
+        <input
+          type="text"
+          class="form-control"
+          [(ngModel)]="orderDetails.phone"
+          name="phone"
+        />
+      </div>
+
+      <div class="mb-3">
+        <label>Address:</label>
+        <textarea
+          class="form-control"
+          [(ngModel)]="orderDetails.address"
+          name="address"
+        ></textarea>
+      </div>
+
+      <div class="mb-3">
+        <label>Payment Method:</label>
+        <select
+          class="form-control"
+          [(ngModel)]="orderDetails.paymentMethod"
+          name="paymentMethod"
+        >
+          <option value="">Select</option>
+          <option value="COD">Cash on Delivery</option>
+          <option value="UPI">UPI</option>
+          <option value="Card">Card</option>
+        </select>
+      </div>
+
+      <div class="cart-summary">
+        <button
+          type="button"
+          (click)="cancelCheckout()"
+          style="background-color: #ff9800"
+        >
+          Back to Cart
+        </button>
+        <button type="button" (click)="submitOrder()">Submit Order</button>
+      </div>
+    </form>
+  </div>
+</div>

@@ -1,1 +1,25 @@
-<h2>orders works!</h2>
+<div class="orders-wrapper container my-4">
+  <div class="orders-section">
+    <h3 class="mb-4 text-center">Your Orders</h3>
+
+    <div *ngIf="userOrders.length > 0; else noOrders">
+      <div *ngFor="let order of userOrders.slice().reverse()" class="order-card card mb-4 shadow-sm p-3">
+        <div class="card-body">
+          <p><strong>Order ID:</strong> {{ order.id }}</p>
+          <p><strong>Name:</strong> {{ order.customerName }}</p>
+          <p><strong>Phone:</strong> {{ order.phone }}</p>
+          <p><strong>Address:</strong> {{ order.address }}</p>
+          <p><strong>Books:</strong> {{ order.bookDetails }}</p>
+          <p><strong>Total:</strong> ₹{{ order.totalAmount }}</p>
+          <p><strong>Payment:</strong> {{ order.paymentMethod }}</p>
+          <p><strong>Status:</strong> {{ order.status }}</p>
+          <p *ngIf="order.orderDate"><strong>Placed On:</strong> {{ order.orderDate | date:'medium' }}</p>
+        </div>
+      </div>
+    </div>
+
+    <ng-template #noOrders>
+      <p class="text-center text-muted">You have no orders yet.</p>
+    </ng-template>
+  </div>
+</div>

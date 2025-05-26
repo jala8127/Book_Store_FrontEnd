@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { ToastrService } from 'ngx-toastr';
+import { AuthService } from 'app/services/auth.service';
 
 @Component({
   selector: 'app-home',
@@ -37,7 +38,8 @@ export class HomeComponent implements OnInit {
   constructor(
     private router: Router,
     private http: HttpClient,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+      private authService: AuthService
   ) {}
 
   ngOnInit(): void {
@@ -88,27 +90,30 @@ export class HomeComponent implements OnInit {
       return;
     }
 
-    this.http.post('http://localhost:8080/api/users/login', {
-      email: this.Email,
-      password: this.password
-    }, { responseType: 'text' }).subscribe({
-      next: () => {
-        this.toastr.success('Login successful!');
-        this.showModal = false;
+        this.http.post('http://localhost:8080/api/users/login', {
+        email: this.Email,
+        password: this.password
+      }, { responseType: 'text' }).subscribe({
+        next: () => {
+          this.toastr.success('Login successful!');
+          this.showModal = false;
 
-        if (this.Email === adminEmail && this.password === adminPassword) {
-          this.router.navigate(['/admin-dashboard']);
-        } else {
-          this.router.navigate(['/dashboard']);
+          // 🔐 Store email in local storage
+          this.authService.setUserEmail(this.Email);
+
+          if (this.Email === adminEmail && this.password === adminPassword) {
+            this.router.navigate(['/admin-dashboard']);
+          } else {
+            this.router.navigate(['/dashboard']);
+          }
+
+          this.Email = '';
+          this.password = '';
+        },
+        error: () => {
+          this.toastr.error('Login failed!');
         }
-
-        this.Email = '';
-        this.password = '';
-      },
-      error: () => {
-        this.toastr.error('Login failed!');
-      }
-    });
+      });
   }
 
   // Register logic
@@ -181,3 +186,4 @@ export class HomeComponent implements OnInit {
     });
   }
 }
+
