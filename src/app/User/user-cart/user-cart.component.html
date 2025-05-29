@@ -3,25 +3,25 @@
   <div class="cart-section" [ngClass]="{ 'hide-cart': showCheckoutForm }" *ngIf="cart.length !== 0">
     <h4>Your Cart</h4>
 
-    <div class="cart-item" *ngFor="let item of cart">
-      <img [src]="item.book.imageUrl" alt="{{ item.book.title }}" />
+   <div class="cart-item" *ngFor="let item of cart">
+  <img [src]="'assets/images/' + item.book.imageUrl" alt="{{ item.book.title }}" />
 
-      <div class="details">
-        <h5>{{ item.book.title }}</h5>
-        <p>Price: ₹{{ item.book.price }}</p>
-        <p>Quantity: {{ item.quantity }}</p>
-        <p>Total: ₹{{ item.book.price * item.quantity }}</p>
-      </div>
+  <div class="details">
+    <h5>{{ item.book.title }}</h5>
+    <p>Price: ₹{{ item.book.price }}</p>
+    <p>Quantity: {{ item.quantity }}</p>
+    <p>Total: ₹{{ item.book.price * item.quantity }}</p>
+  </div>
 
-      <div class="button-group">
-        <button (click)="removeFromCart(item.book.id)">Remove</button>
-        <button class="buy-now" (click)="showCheckout(true, item.book, item.quantity)">Buy Now</button>
-      </div>
-    </div>
+  <div class="button-group">
+    <button (click)="removeFromCart(item.book.id)">Remove</button>
+    <button class="buy-now" (click)="showCheckout(true, item.book, item.quantity)">Buy Now</button>
+  </div>
+</div>
 
     <div class="cart-summary">
       <h5>Total Price: ₹{{ getTotalPrice() }}</h5>
-      <button (click)="showCheckout()">Place Order</button>
+    <button (click)="showCheckout(false)">Place Order</button>
     </div>
   </div>
 
@@ -87,14 +87,8 @@
       </div>
 
       <div class="cart-summary">
-        <button
-          type="button"
-          (click)="cancelCheckout()"
-          style="background-color: #ff9800"
-        >
-          Back to Cart
-        </button>
-        <button type="button" (click)="submitOrder()">Submit Order</button>
+        <button type="button"(click)="cancelCheckout()"style="background-color: #ff9800">Back to Cart</button>
+       <button type="button" (click)="submitOrder()">Place Order</button>
       </div>
     </form>
   </div>

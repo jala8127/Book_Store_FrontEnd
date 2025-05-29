@@ -9,32 +9,37 @@ import { AuthService } from './auth.service';
 })
 export class CartService {
   private cart: { book: Book; quantity: number }[] = [];
-  private cartSubject = new BehaviorSubject<{ book: Book; quantity: number }[]>([]);
+  private cartSubject = new BehaviorSubject<any[]>([]);
   cart$ = this.cartSubject.asObservable();
-  private apiUrl = 'http://localhost:8080/api/cart'; // Replace with your backend URL
+  private apiUrl = 'http://localhost:8080/api/cart';
 
   constructor(private http: HttpClient, private authService: AuthService) {}
 
-   fetchUserCart() {
+  fetchUserCart() {
     const email = this.authService.getUserEmail();
     if (!email) return;
 
-    this.http.get<any[]>(`${this.apiUrl}/${email}`).subscribe(data => {
-      this.cart = data.map(item => ({
-        book: {
-          id: item.bookId,
-          title: item.title,
-          author: item.author,
-          price: item.price,
-          imageUrl: item.imageUrl,
-          description: '', // optional
-          category: '',    // optional
-          genre: '',       // optional
-          stock: 0         // optional
-        },
-        quantity: item.quantity
-      }));
-      this.cartSubject.next(this.cart);
+    this.http.get<any[]>(`${this.apiUrl}/${email}`).subscribe({
+      next: data => {
+        this.cart = data.map(item => ({
+          book: {
+            id: item.book.id,
+            title: item.book.title,
+            author: item.book.author,
+            price: item.bookPrice,
+            imageUrl: item.book.imageUrl,
+            description: '', // optional
+            category: '',    // optional
+            genre: '',       // optional
+            stock: 0         // optional
+          },
+          quantity: item.quantity
+        }));
+        this.cartSubject.next(this.cart);
+      },
+      error: () => {
+        console.error('Failed to fetch user cart');
+      }
     });
   }
 
@@ -45,7 +50,7 @@ export class CartService {
       return;
     }
 
-    const cartItem = {
+    const cart = {
       userEmail: email,
       bookId: book.id,
       title: book.title,
@@ -55,9 +60,8 @@ export class CartService {
       quantity
     };
 
-    this.http.post(`${this.apiUrl}/add`, cartItem).subscribe({
+    this.http.post(`${this.apiUrl}/add`, cart).subscribe({
       next: () => {
-        // Optional: update local cart
         const existing = this.cart.find(item => item.book.id === book.id);
         if (existing) {
           existing.quantity += quantity;
@@ -72,10 +76,6 @@ export class CartService {
     });
   }
 
-  getCart() {
-    return this.cart;
-  }
-
   removeFromCart(bookId: number) {
     const email = this.authService.getUserEmail();
     if (!email) return;
@@ -86,13 +86,18 @@ export class CartService {
     });
   }
 
-
   clearCart() {
-    this.cart = [];
-    this.cartSubject.next(this.cart);
+    const email = this.authService.getUserEmail();
+    if (!email) return;
 
+    this.http.delete(`${this.apiUrl}/clear?email=${email}`).subscribe(() => {
+      this.cart = [];
+      this.cartSubject.next(this.cart);
+    });
   }
+
   placeOrder(orderPayload: any) {
-  return this.http.post<any>('http://localhost:8080/api/orders', orderPayload);
-}
+    return this.http.post('http://localhost:8080/api/orders', orderPayload);
+  }
+  
 }
