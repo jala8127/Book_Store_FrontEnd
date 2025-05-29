@@ -2,9 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { HttpClient } from '@angular/common/http';
 import { ToastrService } from 'ngx-toastr';
 import { AuthService } from 'app/services/auth.service';
+import { UserService } from 'app/services/user.service';
 
 @Component({
   selector: 'app-home',
@@ -37,9 +37,9 @@ export class HomeComponent implements OnInit {
 
   constructor(
     private router: Router,
-    private http: HttpClient,
     private toastr: ToastrService,
-      private authService: AuthService
+    private authService: AuthService,
+    private userService: UserService
   ) {}
 
   ngOnInit(): void {
@@ -90,30 +90,31 @@ export class HomeComponent implements OnInit {
       return;
     }
 
-        this.http.post('http://localhost:8080/api/users/login', {
-        email: this.Email,
-        password: this.password
-      }, { responseType: 'text' }).subscribe({
-        next: () => {
-          this.toastr.success('Login successful!');
-          this.showModal = false;
+    this.userService.login({ email: this.Email, password: this.password }).subscribe({
+      next: (user: any) => {
+        this.toastr.success('Login successful!');
+        this.showModal = false;
 
-          // 🔐 Store email in local storage
-          this.authService.setUserEmail(this.Email);
+        this.authService.setUserInfo({
+          name: user.name,
+          email: user.email,
+          phone: user.phone,
+          address: user.address || ''
+        });
 
-          if (this.Email === adminEmail && this.password === adminPassword) {
-            this.router.navigate(['/admin-dashboard']);
-          } else {
-            this.router.navigate(['/dashboard']);
-          }
-
-          this.Email = '';
-          this.password = '';
-        },
-        error: () => {
-          this.toastr.error('Login failed!');
+        if (this.Email === adminEmail && this.password === adminPassword) {
+          this.router.navigate(['/admin-dashboard']);
+        } else {
+          this.router.navigate(['/dashboard']);
         }
-      });
+
+        this.Email = '';
+        this.password = '';
+      },
+      error: () => {
+        this.toastr.error('Login failed!');
+      }
+    });
   }
 
   // Register logic
@@ -141,12 +142,12 @@ export class HomeComponent implements OnInit {
       return;
     }
 
-    this.http.post('http://localhost:8080/api/users/register', {
+    this.userService.register({
       name: this.registerName,
       email: this.registerEmail,
       phone: this.registerPhone,
       password: this.registerPassword
-    }, { responseType: 'text' }).subscribe({
+    }).subscribe({
       next: (response) => {
         this.toastr.success(response);
         this.closeRegister();
@@ -171,10 +172,10 @@ export class HomeComponent implements OnInit {
       return;
     }
 
-    this.http.post('http://localhost:8080/api/users/forgot-password', {
+    this.userService.forgotPassword({
       email: this.forgotPasswordEmail,
       phone: this.forgotPasswordPhone
-    }, { responseType: 'text' }).subscribe({
+    }).subscribe({
       next: () => {
         this.toastr.success('Password reset link sent to your email.');
         this.closeForgotPassword();
@@ -186,4 +187,3 @@ export class HomeComponent implements OnInit {
     });
   }
 }
-

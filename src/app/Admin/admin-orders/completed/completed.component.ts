@@ -1,17 +1,24 @@
-import { Component } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { Component, OnInit } from '@angular/core';
+import { OrderService, Order} from 'app/services/order.service';
+import { CommonModule } from '@angular/common';
+
 
 @Component({
   selector: 'app-completed',
-  imports: [],
+  imports: [CommonModule],
   templateUrl: './completed.component.html',
-  styleUrl: './completed.component.scss'
+  styleUrls: ['./completed.component.scss']
 })
-export class CompletedComponent {
-  constructor(private http: HttpClient) {}
-  orders: any[] = [];
-ngOnInit(): void {
-  this.http.get<any[]>('http://localhost:8080/api/orders/status?status=Completed')
-    .subscribe(res => this.orders = res);
+export class CompletedComponent implements OnInit {
+
+  orders: Order[] = [];
+
+  constructor(private orderService: OrderService) {}
+
+  ngOnInit(): void {
+  this.orderService.getCompletedOrders().subscribe((data: Order[]) => {
+    console.log("Completed Orders Fetched:", data); // Debug log
+    this.orders = data;
+  });
 }
 }

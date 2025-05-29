@@ -1,0 +1,70 @@
+
+  .orders-container {
+    margin: 2rem auto;
+    max-width: 1200px;
+    padding: 1rem;
+
+  }
+
+  .orders-container h4 {
+    text-align: center;
+    margin-bottom: 1.5rem;
+
+  }
+
+  .order-card {
+    border: 1px solid #dee2e6;
+    border-radius: 0.75rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    margin-bottom: 1.5rem;
+    position: relative;
+    padding: 1rem;
+    background-color: #ffffff;
+    color: black;
+  }
+
+  .status-badge {
+    position: absolute;
+    top: 0.5rem;
+    right: 0.5rem;
+    font-size: 0.9rem;
+    padding: 0.5em 1em;
+    border-radius: 0.5rem;
+    color: rgb(251, 247, 247);
+  }
+
+  .bg-danger {
+    background-color: #dc3545;
+  }
+
+  .bg-success {
+    background-color: #28a745;
+  }
+
+  .order-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+
+  .order-col {
+    flex: 1 1 30%;
+    min-width: 250px;
+  }
+
+  .order-col ul {
+    margin-top: 0.5rem;
+    padding-left: 1.2rem;
+  }
+
+  .order-col ul li {
+    margin-bottom: 0.3rem;
+    list-style-type: disc;
+  }
+
+  .form-select {
+    width: 20vh;
+    padding: 0.3rem;
+    font-size: 0.95rem;
+
+  }

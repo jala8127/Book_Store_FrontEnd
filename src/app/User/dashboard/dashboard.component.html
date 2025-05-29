@@ -33,3 +33,34 @@
   <div class="content-area p-3">
     <router-outlet></router-outlet>
   </div>
+
+<!-- Details Modal -->
+<div class="modal fade" id="DetailsModal" tabindex="-1" aria-labelledby="detailsModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content text-start">
+      <div class="modal-header">
+        <h5 class="modal-title" id="detailsModalLabel">User Details</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+  <div><strong>Name:</strong> {{ userDetails.name }}</div>
+  <div><strong>Email:</strong> {{ userDetails.email }}</div>
+  <div><strong>Phone:</strong> {{ userDetails.phone }}</div>
+
+  <div class="mt-2">
+    <label for="address"><strong>Address:</strong></label>
+    
+    <input id="address" [(ngModel)]="userDetails.address" class="form-control" />
+  </div>
+</div>
+     <div class="modal-footer">
+  <button type="button"
+          class="btn btn-primary"
+          (click)="updateAddress()"
+          [disabled]="!userDetails.address || userDetails.address.trim().length === 0">
+    Save
+  </button>
+</div>
+    </div>
+  </div>
+</div>

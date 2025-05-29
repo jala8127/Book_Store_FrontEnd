@@ -5,34 +5,37 @@ import { Observable } from 'rxjs';
 export interface Order {
   id: number;
   customerName: string;
-  email: string;
   phone: string;
   address: string;
   bookDetails: string;
   totalAmount: number;
   paymentMethod: string;
   status: string;
-  orderDate: string;
+  email: string;
+  orderDate?: string;
 }
 
 @Injectable({
   providedIn: 'root'
 })
 export class OrderService {
-  private baseUrl = 'http://localhost:8080/api/orders';
+  private apiUrl = 'http://localhost:8080/api/orders';
 
   constructor(private http: HttpClient) {}
 
   getUserOrders(email: string): Observable<Order[]> {
-    return this.http.get<Order[]>(`${this.baseUrl}/user-orders/${email}`);
+    return this.http.get<Order[]>(`${this.apiUrl}/user-orders/${email}`);
+  }
+
+  placeOrder(order: Order): Observable<Order> {
+    return this.http.post<Order>(`${this.apiUrl}`, order);
   }
 
   getTotalOrders(): Observable<number> {
-    return this.http.get<number>(`${this.baseUrl}/count`);
+    return this.http.get<number>(`${this.apiUrl}/total`);
   }
 
-  // You can also add a method to update order status if needed:
-  updateOrderStatus(orderId: number, newStatus: string): Observable<any> {
-    return this.http.put(`${this.baseUrl}/update-status/${orderId}`, { status: newStatus });
+  getCompletedOrders(): Observable<Order[]> {
+    return this.http.get<Order[]>(`${this.apiUrl}/completed`);
   }
 }

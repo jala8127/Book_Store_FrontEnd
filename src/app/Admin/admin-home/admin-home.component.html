@@ -31,13 +31,13 @@
       </div>
     </div>
   </div>
-  <!-- Books Customers Wish For Section -->
+  <!-- Top Selling Books Section -->
 <div class="container mt-5 text-center">
-  <h3>Books Customers Wishes For..!</h3>
+  <h1>Top Selling Books</h1>
   <div class="row justify-content-center mt-4">
     <div class="col-md-2 mb-4" *ngFor="let book of wishedBooks">
       <div class="card book-card p-2">
-        <img [src]="book.imageUrl" 
+        <img [src]="book.imageUrl"  
              class="card-img-top book-img" 
              alt="{{ book.title }}">
         <div class="card-body p-6">

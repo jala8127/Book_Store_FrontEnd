@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
-import { OrderService,Order } from 'app/services/order.service';
-
+import { OrderService, Order } from 'app/services/order.service';
 
 @Component({
   selector: 'app-orders',
@@ -18,7 +17,7 @@ export class OrdersComponent implements OnInit {
   constructor(private http: HttpClient, private orderService: OrderService) {}
 
   ngOnInit() {
-    this.email = localStorage.getItem('userEmail') || '';
+    this.email = localStorage.getItem('email') || '';
     if (this.email) {
       this.orderService.getUserOrders(this.email).subscribe({
         next: (orders) => this.userOrders = orders,

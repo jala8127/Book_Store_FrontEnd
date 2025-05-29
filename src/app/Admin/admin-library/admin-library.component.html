@@ -166,6 +166,20 @@
             </div>
           </div>
 
+          <!-- Price and Stock Row -->
+          <div class="row mt-3">
+            <div class="col-md-6 mb-3">
+              <label for="priceEdit" class="form-label">Price</label>
+              <input type="number" id="priceEdit" class="form-control" [(ngModel)]="selectedBook.price"
+                    name="price" [ngModelOptions]="{ standalone: true }" min="0" required />
+            </div>
+            <div class="col-md-6 mb-3">
+              <label for="stockEdit" class="form-label">Stock</label>
+              <input type="number" id="stockEdit" class="form-control" [(ngModel)]="selectedBook.stock"
+                    name="stock" [ngModelOptions]="{ standalone: true }" min="0" required />
+            </div>
+          </div>
+
           <!-- Description -->
           <div class="row mt-3">
             <div class="col-12 text-center">
