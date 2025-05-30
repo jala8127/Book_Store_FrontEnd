@@ -13,7 +13,6 @@
   overflow: hidden;
 }
 
-/* ========== CART SECTION ========== */
 .cart-section {
   background-color: white;
   padding: 1rem;
@@ -110,7 +109,7 @@
   right: -100%;
   width: 400px;
   max-width: 40rem;
-  max-height: 100vh;
+  height: 100%;
   background-color: white;
   padding: 2rem;
   box-shadow: -4px 0 10px rgba(0, 0, 0, 0.2);

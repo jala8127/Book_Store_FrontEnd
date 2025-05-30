@@ -92,7 +92,7 @@ export class UserCartComponent implements OnInit {
       phone: this.orderDetails.phone,
       address: this.orderDetails.address,
       paymentMethod: this.orderDetails.paymentMethod,
-      bookDetails: books + ' = ' + quantities,
+      bookDetails: books + ' x ' + quantities,
       // status: 'Pending',
       totalAmount: this.getTotalPrice()
     };
@@ -123,4 +123,7 @@ export class UserCartComponent implements OnInit {
       0
     );
   }
+  getTotalQuantity(): number {
+  return this.cart.reduce((total, item) => total + item.quantity, 0);
+}
 }

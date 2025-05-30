@@ -1,24 +1,31 @@
 import { Component, OnInit } from '@angular/core';
-import { OrderService, Order} from 'app/services/order.service';
+import { HttpClient } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
-
 
 @Component({
   selector: 'app-completed',
+  standalone: true,
   imports: [CommonModule],
   templateUrl: './completed.component.html',
   styleUrls: ['./completed.component.scss']
 })
 export class CompletedComponent implements OnInit {
+  orders: any[] = [];
 
-  orders: Order[] = [];
-
-  constructor(private orderService: OrderService) {}
+  constructor(private http: HttpClient) {}
 
   ngOnInit(): void {
-  this.orderService.getCompletedOrders().subscribe((data: Order[]) => {
-    console.log("Completed Orders Fetched:", data); // Debug log
-    this.orders = data;
-  });
-}
+    this.http.get<any[]>('http://localhost:8080/api/orders/status?status=Completed')
+      .subscribe({
+        next: (res) => {
+          this.orders = res.map(order => ({
+            ...order,
+            bookList: typeof order.bookDetails === 'string'
+              ? order.bookDetails.split(',').map((b: string) => b.trim())
+              : []
+          }));
+        },
+        error: (err) => console.error('Error fetching completed orders:', err)
+      });
+  }
 }

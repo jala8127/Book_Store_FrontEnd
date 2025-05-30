@@ -23,9 +23,9 @@ export class OrderService {
 
   constructor(private http: HttpClient) {}
 
-  getUserOrders(email: string): Observable<Order[]> {
-    return this.http.get<Order[]>(`${this.apiUrl}/user-orders/${email}`);
-  }
+ getUserOrders(email: string): Observable<Order[]> {
+  return this.http.get<Order[]>(`${this.apiUrl}/user/${email}`);
+}
 
   placeOrder(order: Order): Observable<Order> {
     return this.http.post<Order>(`${this.apiUrl}`, order);

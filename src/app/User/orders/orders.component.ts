@@ -16,13 +16,18 @@ export class OrdersComponent implements OnInit {
 
   constructor(private http: HttpClient, private orderService: OrderService) {}
 
-  ngOnInit() {
-    this.email = localStorage.getItem('email') || '';
-    if (this.email) {
-      this.orderService.getUserOrders(this.email).subscribe({
-        next: (orders) => this.userOrders = orders,
-        error: (err) => console.error('Error fetching orders:', err)
-      });
-    }
+ngOnInit() {
+  this.email = localStorage.getItem('email') || '';
+  console.log('Fetching orders for email:', this.email); // Optional for debugging
+
+  if (this.email) {
+    this.orderService.getUserOrders(encodeURIComponent(this.email)).subscribe({
+      next: (orders) => {
+        console.log('Orders received:', orders); // Optional for debugging
+        this.userOrders = orders;
+      },
+      error: (err) => console.error('Error fetching orders:', err)
+    });
   }
+}
 }

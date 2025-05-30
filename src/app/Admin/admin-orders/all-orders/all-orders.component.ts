@@ -21,7 +21,6 @@ export class AllOrdersComponent implements OnInit {
   fetchAllOrders(): void {
     this.http.get<any[]>('http://localhost:8080/api/orders/all').subscribe({
       next: (orders) => {
-        // Sort orders in descending order by ID (latest first)
         this.allOrders = orders
           .sort((a, b) => b.id - a.id)
           .map(order => ({
@@ -35,16 +34,29 @@ export class AllOrdersComponent implements OnInit {
     });
   }
 
-  updateStatus(orderId: number, newStatus: string): void {
-    this.http.put(`http://localhost:8080/api/orders/${orderId}/status`, { status: newStatus })
-      .subscribe(() => {
-        this.fetchAllOrders(); // Refresh after status update
-      });
-  }
-
-  onStatusChange(orderId: number, event: Event): void {
-    const target = event.target as HTMLSelectElement;
-    const newStatus = target.value;
-    this.updateStatus(orderId, newStatus);
-  }
+ updateStatus(orderId: number, newStatus: string): void {
+  this.http.patch(`http://localhost:8080/api/orders/${orderId}/status`, { status: newStatus })
+    .subscribe({
+      next: () => {
+        this.allOrders = this.allOrders.map(order =>
+          order.id === orderId
+            ? { 
+                ...order, 
+                status: newStatus,
+              }
+            : order
+        );
+      },
+      error: (err) => console.error('Failed to update status', err)
+    });
 }
+  onStatusChange(orderId: number, event: Event): void {
+  const target = event.target as HTMLSelectElement;
+  const newStatus = target.value;
+
+  this.allOrders = this.allOrders.map(order =>
+    order.id === orderId ? { ...order, status: newStatus } : order
+  );
+
+  this.updateStatus(orderId, newStatus);
+}}

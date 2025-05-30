@@ -37,11 +37,6 @@
     <h4 *ngIf="isBuyNow && selectedBook">Checkout - {{ selectedBook.title }}</h4>
     <h4 *ngIf="!isBuyNow">Checkout - All Items</h4>
 
-    <div *ngIf="isBuyNow && selectedBook" class="details">
-      <p><strong>Quantity:</strong> {{ selectedQuantity }}</p>
-      <p><strong>Total:</strong> ₹{{ selectedBook.price * selectedQuantity }}</p>
-    </div>
-
     <form>
       <div class="mb-3">
         <label>Name:</label>
@@ -63,6 +58,17 @@
         />
       </div>
 
+       <div class="mb-3">
+        <label>Email:</label>
+        <input
+          type="text"
+          class="form-control"
+          [(ngModel)]="orderDetails.phone"
+          name="email"
+        />
+      </div>
+
+
       <div class="mb-3">
         <label>Address:</label>
         <textarea
@@ -72,7 +78,23 @@
         ></textarea>
       </div>
 
-      <div class="mb-3">
+    <div *ngIf="isBuyNow && selectedBook" class="details">More actions
+      <p><strong>Quantity:</strong> {{ selectedQuantity }}</p>
+      <p><strong>Total:</strong> ₹{{ selectedBook.price * selectedQuantity }}</p>
+    </div>
+      <div *ngIf="!isBuyNow" class="details">More actions
+        <p><strong>Quantity:</strong> {{ getTotalQuantity() }}</p>
+        <p><strong>Total:</strong> ₹{{ getTotalPrice() }}</p>
+      </div>
+
+      <div class="cart-summary">
+        <button type="button"(click)="cancelCheckout()"style="background-color: #ff9800">Back to Cart</button>
+       <button type="button" (click)="submitOrder()">Place Order</button>
+      </div>
+    </form>
+  </div>
+</div>
+<!-- <div class="mb-3">
         <label>Payment Method:</label>
         <select
           class="form-control"
@@ -84,12 +106,4 @@
           <option value="UPI">UPI</option>
           <option value="Card">Card</option>
         </select>
-      </div>
-
-      <div class="cart-summary">
-        <button type="button"(click)="cancelCheckout()"style="background-color: #ff9800">Back to Cart</button>
-       <button type="button" (click)="submitOrder()">Place Order</button>
-      </div>
-    </form>
-  </div>
-</div>
+      </div> -->
