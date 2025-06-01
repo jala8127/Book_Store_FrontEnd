@@ -1,6 +1,6 @@
 <div class="orders-wrapper container my-4">
   <div class="orders-section">
-    <h3 class="mb-4 text-center">Your Orders</h3>
+    <h2 class="mb-4 text-center">Your Orders</h2>
 
     <div *ngIf="userOrders.length > 0; else noOrders">
       <div *ngFor="let order of userOrders.slice().reverse()" class="order-card card mb-4 shadow-sm p-3">
@@ -19,7 +19,7 @@
     </div>
 
     <ng-template #noOrders>
-      <p class="text-center text-muted">You have no orders yet.</p>
+      <h4 class="text-center text-white">You have no orders yet..!</h4>
     </ng-template>
   </div>
 </div>

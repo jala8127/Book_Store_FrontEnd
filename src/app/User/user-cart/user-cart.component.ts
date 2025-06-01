@@ -23,6 +23,7 @@ export class UserCartComponent implements OnInit {
   orderDetails = {
     name: '',
     phone: '',
+    email: '',
     address: '',
     paymentMethod: 'COD'
   };
@@ -41,7 +42,7 @@ export class UserCartComponent implements OnInit {
   loadCartItems(): void {
     this.cartService.fetchUserCart();
     this.cartService.cart$.subscribe(cartData => {
-      console.log('Cart Data:', cartData);
+      // console.log('Cart Data:', cartData);
       this.cart = cartData;
     });
   }
